@@ -1,7 +1,7 @@
 # coding=utf-8
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-
+import redis
 app = Flask(__name__)
 
 
@@ -15,7 +15,6 @@ class Config(object):
 
 app.config.from_object(Config)
 db = SQLAlchemy(app)
-
 
 @app.route('/')
 def index():

@@ -6,7 +6,8 @@ class Config(object):
     '''工程配置信息'''
     SECRECT_KEY = '1+LWdsiotKtsOYb9/frWRRw0JGLlQUsmLn36Foxp4+p0clIIHhjnoIY1iGR1UoIt'
     # 数据库配置
-    SQLAlCHEMY_TRACK_MODIFICATION = False
+    SQLALCHEMY_DATABASE_URI = 'mysql://root:mysql@127.0.0.1/ihome'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
     # 配置redis
     REDIS_HOST = '127.0.0.1'
     REDIS_PORT = 6379
@@ -33,7 +34,7 @@ class TestingConfig(Config):
     # 设置数据库的链接地址
     SQLALCHEMY_DATABASE_URI = 'mysql://root:mysql@127.0.0.1/ihome'
     # 开启测试标志
-    TestinG = True
+    TESTING = True
 
 config_dict={
     'development':DevelopmentConfig,

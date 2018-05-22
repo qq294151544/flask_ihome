@@ -8,6 +8,7 @@ from ihome.utils.commons import RegexConvter
 from config import config_dict
 
 db = SQLAlchemy()
+redis_store = None
 
 
 # 工厂方法：传入不同的参数，返回不同的对象
@@ -20,6 +21,7 @@ def create_app(config_name):
     db.init_app(app)
 
     # 创建redis数据窟链接对象
+    global redis_store
     redis_store = redis.StrictRedis(host=config_cls.REDIS_HOST, port=config_cls.REDIS_PORT)
 
     # 开启csrf防护

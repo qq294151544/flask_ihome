@@ -1,12 +1,11 @@
 # coding=utf-8
-from flask import Flask,session
-from config import Config
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import redis
-from flask_wtf import CSRFProtect
+from flask_wtf.csrf import CSRFProtect
 from flask_session import Session
 from config import config_dict
-
+from index import api
 db = SQLAlchemy()
 
 
@@ -25,5 +24,6 @@ def create_app(config_name):
     CSRFProtect(app)
 
     Session(app)
-
+    #注册蓝图对象
+    app.register_blueprint(api)
     return app

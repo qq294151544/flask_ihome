@@ -23,7 +23,7 @@ class DevelopmentConfig(Config):
     '''开发环境配置类'''
     DEBUG = True
     #开发阶段的日志等级
-    LOG_LEVEL = logging.WARN
+    LOG_LEVEL = logging.DEBUG
 
 class ProductionConfig(Config):
     '''生产环境配置类'''

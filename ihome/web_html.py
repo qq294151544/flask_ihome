@@ -1,7 +1,8 @@
 # coding=utf-8
-# 该蓝图给刘看齐提供静态页面
+# 该蓝图给浏览器提供静态页面
 from flask import Blueprint
-from flask import current_app
+from flask import current_app, make_response
+from flask_wtf.csrf import generate_csrf
 
 html = Blueprint('html', __name__)
 
@@ -16,5 +17,9 @@ def get_static_html(file_name):
     if file_name != 'favicon.ico':
         # 当浏览器访问一个网站的时候，浏览器会自动访问网站下的一个favicon文件，网站图标
         file_name = 'html/' + file_name
+    response = make_response(current_app.send_static_file(file_name))
 
-    return current_app.send_static_file(file_name)
+    # 生成一个csrf_token cookie
+    csrf_token = generate_csrf()
+    response.set_cookie('csrf_token', csrf_token)
+    return response

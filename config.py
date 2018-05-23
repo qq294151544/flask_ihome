@@ -5,7 +5,7 @@ from flask import logging
 
 class Config(object):
     '''工程配置信息'''
-    SECRECT_KEY = '1+LWdsiotKtsOYb9/frWRRw0JGLlQUsmLn36Foxp4+p0clIIHhjnoIY1iGR1UoIt'
+    SECRET_KEY = '1+LWdsiotKtsOYb9/frWRRw0JGLlQUsmLn36Foxp4+p0clIIHhjnoIY1iGR1UoIt'
     # 数据库配置
     SQLALCHEMY_DATABASE_URI = 'mysql://root:mysql@127.0.0.1/ihome'
     SQLALCHEMY_TRACK_MODIFICATIONS = False

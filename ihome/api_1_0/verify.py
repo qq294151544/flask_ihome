@@ -21,6 +21,7 @@ def get_image_code():
 
     # 2. 产生图片验证码,  1.文件名称，2.验证码文本，3.验证码图片内容
     name, text, content = captcha.generate_captcha()
+    current_app.logger.info('图片验证码：%s' % text)
 
     # 3.在redis中保存图片验证码
     # redis_store.set('key','value','expires')
@@ -68,19 +69,19 @@ def send_sms_code():
     if real_image_code != image_code:
         print image_code
         return jsonify(errno=RET.DATAERR, errmsg='图片验证码错误')
-
     # 4、使用云通讯发送短信验证码
     # 4.1、随机生成一个6位的短信验证码 (%06s,格式化输出，字符串s有六位，不足六位补0）
     sms_code = "%06s" % random.randint(0, 999999)
+    current_app.logger.info('短信验证码：%s' % sms_code)
     # 4.2、发送短信验证码
-    try:
-        res = CCP().send_template_sms(mobile, [sms_code, constants.SMS_CODE_REDIS_EXPIRES / 60], 1)
-    except Exception as e:
-        current_app.logger.error(e)
-        return jsonify(errno=RET.THIRDERR, errmsg='发送短信失败')
-    if res != 1:
-        # 发送短信验证码失败
-        return jsonify(errno=RET.THIRDERR, errmsg='发送短信验证码失败')
+    # try:
+    #     res = CCP().send_template_sms(mobile, [sms_code, constants.SMS_CODE_REDIS_EXPIRES / 60], 1)
+    # except Exception as e:
+    #     current_app.logger.error(e)
+    #     return jsonify(errno=RET.THIRDERR, errmsg='发送短信失败')
+    # if res != 1:
+    #     # 发送短信验证码失败
+    #     return jsonify(errno=RET.THIRDERR, errmsg='发送短信验证码失败')
     # 4.3、保存短信验证码在redis中
     try:
         redis_store.set('smscode:%s' % mobile, sms_code, constants.SMS_CODE_REDIS_EXPIRES)

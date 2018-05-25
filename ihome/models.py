@@ -1,10 +1,11 @@
 # -*- coding:utf-8 -*-
-#ihome所使用的所有模型
+# ihome所使用的所有模型
 
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from ihome import constants
 from . import db
+# from werkzeug.security import generate_password_hash
 
 
 class BaseModel(object):
@@ -28,6 +29,14 @@ class User(BaseModel, db.Model):
     avatar_url = db.Column(db.String(128))  # 用户头像路径
     houses = db.relationship("House", backref="user")  # 用户发布的房屋
     orders = db.relationship("Order", backref="user")  # 用户下的订单
+
+    @property
+    def password(self):
+        raise AttributeError('不能读取密码内容')
+
+    @password.setter
+    def password(self, value):
+        self.password_hash = generate_password_hash(value)
 
 
 class Area(BaseModel, db.Model):
@@ -204,4 +213,3 @@ class Order(BaseModel, db.Model):
             "comment": self.comment if self.comment else ""
         }
         return order_dict
-

@@ -1,4 +1,4 @@
-# coding=urf-8
+# coding=utf-8
 # 此文件定义用户登陆注册有关api
 import re
 
@@ -50,8 +50,8 @@ def register():
     user = User()
     user.mobile = mobile
     user.name = mobile
-    #todo:密码加密
-
+    # todo:密码加密
+    user.password = password
 
     # 5、把注册信用户信息添加进数据库
     try:
@@ -63,5 +63,5 @@ def register():
 
 
 
-     # 6、返回应答，注册成功
+        # 6、返回应答，注册成功
     return jsonify(errno=RET.OK, errmsg='注册成功')

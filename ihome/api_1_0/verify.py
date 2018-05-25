@@ -71,7 +71,7 @@ def send_sms_code():
         return jsonify(errno=RET.DATAERR, errmsg='图片验证码错误')
     # 4、使用云通讯发送短信验证码
     # 4.1、随机生成一个6位的短信验证码 (%06s,格式化输出，字符串s有六位，不足六位补0）
-    sms_code = "%06s" % random.randint(0, 999999)
+    sms_code = "%06d" % random.randint(0, 999999)
     current_app.logger.info('短信验证码：%s' % sms_code)
     # 4.2、发送短信验证码
     # try:

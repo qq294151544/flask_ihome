@@ -94,7 +94,7 @@ def login():
         return jsonify(errno=RET.USERERR, errmsg='用户不存在')
 
     # 3、校验登陆密码是否正确
-    if not user.check_user_password(password):
+    if not user.check_password(password):
         return jsonify(errno=RET.PWDERR, errmsg='登陆密码错误')
 
     # 4、记住用户的登陆状态（用session保存）

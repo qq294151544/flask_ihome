@@ -20,7 +20,7 @@ $(document).ready(function () {
             $('#user-avatar').attr('src',resp.data.avatar_url);
 
             //设置用户名
-            $('#user-name').val(resp.username);
+            $('#user-name').val(resp.data.username);
         }
         else {
             //获取信息失败

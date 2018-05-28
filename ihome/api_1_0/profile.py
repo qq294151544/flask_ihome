@@ -2,7 +2,7 @@
 # 次文件定义用户个人相关api接口
 from flask import session, current_app, jsonify, request
 
-from ihome import db
+from ihome import db, constants
 from ihome.models import User
 from ihome.utils.image_storage import storage_image
 from ihome.utils.response_code import RET
@@ -82,5 +82,6 @@ def set_user_avatar():
         return jsonify(errno=RET.DBERR, errmsg='设置用户头像记录')
 
     # 4、返回应答，上传成功
-    return jsonify(errno=RET.OK, errmsg='上传头像成功')
+    avatar_url = constants.QINIU_DOMIN_PREFIX + key
+    return jsonify(errno=RET.OK, errmsg='上传头像成功',data={'avatar_url':avatar_url})
 

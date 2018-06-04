@@ -47,7 +47,7 @@ def register():
         return jsonify(errno=RET.DATAERR, errmsg='短信验证码错误')
     # 判断手机号是否已经被注册
     try:
-        user = User.query.filter(User.mobile==mobile).first()
+        user = User.query.filter(User.mobile == mobile).first()
     except Exception as e:
         current_app.logger.error(e)
         return jsonify(errno=RET.DBERR, errmsg='查询用户信息失败')
@@ -73,7 +73,7 @@ def register():
     session['user_name'] = user.name
     session['mobile'] = mobile
 
-        # 6、返回应答，注册成功
+    # 6、返回应答，注册成功
     return jsonify(errno=RET.OK, errmsg='注册成功')
 
 
@@ -114,3 +114,17 @@ def login():
 
     # 5、返回应答
     return jsonify(errno=RET.OK, errmsg='登陆成功')
+
+
+@api.route('/sessions', methods=['DELETE'])
+def logout():
+    '''
+    用户退出登陆
+    1.清除用户session信息
+    2.返回应答
+    '''
+    # 1.清除用户session信息
+    session.clear()
+
+    # 2.返回应答
+    return jsonify(errno=RET.OK, errmsg='退出成功')

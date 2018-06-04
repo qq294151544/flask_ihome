@@ -1,8 +1,9 @@
 function showSuccessMsg() {
-    $('.popup_con').fadeIn('fast', function() {
-        setTimeout(function(){
-            $('.popup_con').fadeOut('fast',function(){}); 
-        },1000) 
+    $('.popup_con').fadeIn('fast', function () {
+        setTimeout(function () {
+            $('.popup_con').fadeOut('fast', function () {
+            });
+        }, 1000)
     });
 }
 
@@ -13,14 +14,18 @@ function getCookie(name) {
 
 $(document).ready(function () {
     // TODO: 在页面加载完毕向后端查询用户的信息
-    $.get('/api/v1.0/user',function (resp) {
-        if(resp.errno == '0'){
+    $.get('/api/v1.0/user', function (resp) {
+        if (resp.errno == '0') {
             //获取信息成功
             //设置用户头像img标签src
-            $('#user-avatar').attr('src',resp.data.avatar_url);
+            $('#user-avatar').attr('src', resp.data.avatar_url);
 
             //设置用户名
             $('#user-name').val(resp.data.username);
+        }
+        else if (resp.errno == '4104') {
+            //用户未登录，跳转到登陆页面
+            location.href = 'login.html'
         }
         else {
             //获取信息失败
@@ -33,16 +38,20 @@ $(document).ready(function () {
 
         //模拟表单的提交
         $(this).ajaxSubmit({
-            'url':'/api/v1.0/user/avatar',
-            'type':'post',
-            'headers':{
-                'X-CSRFToken':getCookie('csrf_token')
+            'url': '/api/v1.0/user/avatar',
+            'type': 'post',
+            'headers': {
+                'X-CSRFToken': getCookie('csrf_token')
             },
-            'success':function (resp) {
-                if (resp.errno == '0'){
+            'success': function (resp) {
+                if (resp.errno == '0') {
                     //上传成功
                     //设置用户头像img标签src
-                    $('#user-avatar').attr('src',resp.data.avatar_url);
+                    $('#user-avatar').attr('src', resp.data.avatar_url);
+                }
+                else if (resp.errno == '4104') {
+                    //用户未登录，跳转到登陆页面
+                    location.href = 'login.html'
                 }
                 else {
                     //上传失败
@@ -55,26 +64,30 @@ $(document).ready(function () {
     $('#form-name').submit(function (e) {
         e.preventDefault()
         //获取参数
-        var username =$('#user-name').val();
-        if (!username){
+        var username = $('#user-name').val();
+        if (!username) {
             alert('请输入用户名')
             return;
         }
-        var params={
-            'username':username
+        var params = {
+            'username': username
         };
         $.ajax({
-            'url':'/api/v1.0/user/name',
-            'type':'put',
-            'data':JSON.stringify(params),
-            'contentType':'application/json',
-            'headers':{
-                'X-CSRFToken':getCookie('csrf_token')
+            'url': '/api/v1.0/user/name',
+            'type': 'put',
+            'data': JSON.stringify(params),
+            'contentType': 'application/json',
+            'headers': {
+                'X-CSRFToken': getCookie('csrf_token')
             },
-            'success':function (resp) {
-                if (resp.errnp=='0'){
+            'success': function (resp) {
+                if (resp.errnp == '0') {
                     //修改成功
                     showSuccessMsg()
+                }
+                else if (resp.errno == '4104') {
+                    //用户未登录，跳转到登陆页面
+                    location.href = 'login.html'
                 }
                 else {
                     //修改失败

@@ -5,7 +5,19 @@ function getCookie(name) {
 
 // TODO: 点击推出按钮时执行的函数
 function logout() {
-
+        $.ajax({
+            'url':'/api/v1.0/sessions',
+            'type':'delete',
+            'headers':{
+                'X-CSRFToken':getCookie('csrf_token')
+            },
+            'success':function (resp) {
+                if (resp.errno =='0'){
+                    //退出登陆成功
+                    location.href = 'login.html'
+                }
+            }
+        })
 }
 
 $(document).ready(function () {
@@ -18,6 +30,10 @@ $(document).ready(function () {
             $('#user-avatar').attr('src', resp.data.avatar_url)
             $('#user-name').html(resp.data.username);
             $('#user-mobile').html(resp.data.mobile);
+        }
+        else if (resp.errno == '4104') {
+            //用户未登录，跳转到登陆页面
+            location.href = 'login.html'
         }
         else {
             //获取个人信息失败

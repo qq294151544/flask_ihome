@@ -4,12 +4,14 @@ from flask import session, current_app, jsonify, request
 
 from ihome import db, constants
 from ihome.models import User
+from ihome.utils.commons import login_required
 from ihome.utils.image_storage import storage_image
 from ihome.utils.response_code import RET
 from . import api
 
 
 @api.route('/user')
+@login_required  # 登陆验证装饰器
 def get_user_info():
     '''
     获取用户个人的信息：
@@ -19,7 +21,8 @@ def get_user_info():
     3、查到数据，组织数据，返回应答
     '''
     # 1、获取登陆用户id
-    user_id = session.get('user_id')
+    # user_id = session.get('user_id')
+    user_id = g.user_id
 
     # 2、根据id查询用户信息（如果查不到则用户不存在）
     try:
@@ -42,6 +45,7 @@ def get_user_info():
 
 
 @api.route('/user/avatar', methods=['POST'])
+@login_required
 def set_user_avatar():
     '''
     设置用户头像信息：
@@ -63,7 +67,8 @@ def set_user_avatar():
         current_app.logger.error(e)
         return jsonify(errno=RET.THIRDERR, errmsg='上传用户头像失败')
     # 3、设置用户头像记录
-    user_id = session.get('user_id')
+    # user_id = session.get('user_id')
+    user_id = g.user_id
     try:
         user = User.query.get(user_id)
     except Exception as e:
@@ -88,6 +93,7 @@ def set_user_avatar():
 
 
 @api.route('/user/name', methods=['PUT'])
+@login_required
 def set_user_name():
     '''
     设置用户的用户名
@@ -113,7 +119,8 @@ def set_user_name():
         return jsonify(errno=RET.DATAEXIST, errmsg='用户名已存在')
 
     # 3、设置用户的用户名
-    user_id = session.get('user_id')
+    # user_id = session.get('user_id')
+    user_id = g.user_id
     try:
         user = User.query.get(user_id)
     except Exception as e:

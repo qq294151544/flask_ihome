@@ -1,6 +1,6 @@
 # coding=utf-8
 # 次文件定义用户个人相关api接口
-from flask import session, current_app, jsonify, request
+from flask import session, current_app, jsonify, request,g
 
 from ihome import db, constants
 from ihome.models import User

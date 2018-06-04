@@ -38,7 +38,7 @@ def get_user_info():
             'avatar_url': constants.QINIU_DOMIN_PREFIX + self.avatar_url if user.avatar_url else '',
         }
     '''
-    return jsonify(errno=RET.OK, errmsg='ok', data=User.to_dict())
+    return jsonify(errno=RET.OK, errmsg='ok', data=user.to_dict())
 
 
 @api.route('/user/avatar', methods=['POST'])
@@ -113,14 +113,22 @@ def set_user_name():
         return jsonify(errno=RET.DATAEXIST, errmsg='用户名已存在')
 
     # 3、设置用户的用户名
-    user.name == username
+    user_id = session.get('user_id')
+    try:
+        user = User.query.get(user_id)
+    except Exception as e:
+        current_app.logger.error(e)
+        return jsonify(errno=RET.DBERR, errmsg='查询用户信息失败')
+
+    if not user:
+        return jsonify(errno=RET.USERERR, errmsg='用户不存在')
+    user.name = username
     try:
         db.session.commit()
     except Exception as e:
         db.session.rollback()
         current_app.logger.error(e)
         return jsonify(errno=RET.DBERR, errmsg='设置用户名失败')
-
 
     # 4、返回应答，设置成功
     return jsonify(errno=RET.OK, errmsg='设置用户名成功')

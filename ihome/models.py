@@ -47,8 +47,9 @@ class User(BaseModel, db.Model):
         resp = {
             'user_id': self.id,
             'username': self.name,
-            'avatar_url': constants.QINIU_DOMIN_PREFIX + self.avatar_url if user.avatar_url else '',
+            'avatar_url': constants.QINIU_DOMIN_PREFIX + self.avatar_url if self.avatar_url else '',
         }
+        return resp
 
 class Area(BaseModel, db.Model):
     """城区"""
